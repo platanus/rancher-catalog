@@ -1,0 +1,35 @@
+rails:
+  image: platanus/hound:latest
+  ports:
+    - 3000:3000
+  volumes:
+    - /usr/src/app
+  environment:
+    - REDIS_URL=redis://redis:${redis_port}
+    - DATABASE_URL=postgres://${db_user}:${db_password}@db:${db_port}/hound
+    - POSTGRES_ENV_POSTGRES_PASSWORD=${db_password}
+    - POSTGRES_ENV_POSTGRES_USER=${db_user}
+    - POSTGRES_PORT_5432_TCP_ADDR=db
+    - POSTGRES_PORT_5432_TCP_PORT=${db_port}
+    - GITHUB_CLIENT_ID=${github_client_id}
+    - GITHUB_CLIENT_SECRET=${github_client_secret}
+    - HOUND_GITHUB_TOKEN=${hound_github_token}
+    - HOUND_GITHUB_USERNAME=${hound_github_username}
+    - HOST=${host}
+    - ADMIN_GITHUB_USERNAMES=${admin_github_usernames}
+    - RESQUE_ADMIN_PASSWORD=${resque_admin_password}
+    - SECRET_KEY_BASE=${secret_key_base}
+    - RESQUE_JOB_TIMEOUT=120
+    - INTERCOM_API_SECRET=intercom_api_secret
+    - STRIPE_PUBLISHABLE_KEY=stripe_publishable_key
+    - SPLIT_ADMIN_PASSWORD=split_password
+    - SEGMENT_KEY=segment_key
+    - MAX_COMMENTS=10
+    - CHANGED_FILES_THRESHOLD=300
+    - ENABLE_HTTPS=no
+    - RACK_ENV=production
+  external_links:
+    - ${redis_link}:redis
+    - ${db_link}:db
+  entrypoint: ['/usr/src/app/config/docker/rails-entrypoint.sh']
+  command: ["bundle","exec","puma","-C","./config/puma.rb"]
