@@ -1,0 +1,8 @@
+name: Hound
+description: |
+  Hound comments on style violations in GitHub pull requests, allowing you and your team to better review and maintain a clean codebase.
+version: 1.0.0
+category: Continuous Integration
+maintainer: juan.ignacio@platan.us
+license: https://github.com/houndci/hound/blob/master/LICENSE
+projectURL: https://hounci.com
