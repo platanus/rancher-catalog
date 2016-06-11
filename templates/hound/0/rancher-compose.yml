@@ -65,13 +65,6 @@
       required: true
       default: 5432
       type: string
-    - variable: "redis_link"
-      description: |
-        Choose the Redis service to use.
-        You can choose a running redis container or an external service
-      label: "Redis stack/service"
-      required: true
-      type: "service"
     - variable: "resque_admin_password"
       description: |
         Password to enter to the resque admin console. ${host}/queue

@@ -5,7 +5,7 @@ rails:
   volumes:
     - /usr/src/app
   environment:
-    - REDIS_URL=redis://redis:${redis_port}
+    - REDIS_URL=redis://redis:6379
     - DATABASE_URL=postgres://${db_user}:${db_password}@db:${db_port}/hound
     - POSTGRES_ENV_POSTGRES_PASSWORD=${db_password}
     - POSTGRES_ENV_POSTGRES_USER=${db_user}
@@ -28,8 +28,12 @@ rails:
     - CHANGED_FILES_THRESHOLD=300
     - ENABLE_HTTPS=no
     - RACK_ENV=production
+  links:
+    - redis
   external_links:
-    - ${redis_link}:redis
     - ${db_link}:db
   entrypoint: ['/usr/src/app/config/docker/rails-entrypoint.sh']
   command: ["bundle","exec","puma","-C","./config/puma.rb"]
+
+redis:
+  image: redis
