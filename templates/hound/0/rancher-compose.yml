@@ -1,5 +1,6 @@
 .catalog:
   uuid: hound-0
+  version: 0.1.0-rancher1
   questions:
     - variable: "hound_host"
       description: |
