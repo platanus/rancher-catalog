@@ -39,13 +39,6 @@
       label: "Github Hound-User Token"
       required: true
       type: string
-    - variable: "db_link"
-      description: |
-        Choose the Postgres database service to use.
-        You can choose a running db container or an external service
-      label: "Postgresql stack/service"
-      required: true
-      type: "service"
     - variable: "db_user"
       description: |
         The username to connect to the database with.
@@ -58,13 +51,6 @@
       label: "Postgresql Password"
       required: true
       type: password
-    - variable: "db_port"
-      description: |
-        The port where the database is listening.
-      label: "Postgresql Port"
-      required: true
-      default: 5432
-      type: string
     - variable: "resque_admin_password"
       description: |
         Password to enter to the resque admin console. ${host}/queue

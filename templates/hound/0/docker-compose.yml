@@ -6,11 +6,7 @@ rails:
     - /usr/src/app
   environment:
     - REDIS_URL=redis://redis:6379
-    - DATABASE_URL=postgres://${db_user}:${db_password}@db:${db_port}/hound
-    - POSTGRES_ENV_POSTGRES_PASSWORD=${db_password}
-    - POSTGRES_ENV_POSTGRES_USER=${db_user}
-    - POSTGRES_PORT_5432_TCP_ADDR=db
-    - POSTGRES_PORT_5432_TCP_PORT=${db_port}
+    - DATABASE_URL=postgres://${db_user}:${db_password}@db:5432/hound
     - GITHUB_CLIENT_ID=${github_client_id}
     - GITHUB_CLIENT_SECRET=${github_client_secret}
     - HOUND_GITHUB_TOKEN=${hound_github_token}
@@ -30,10 +26,16 @@ rails:
     - RACK_ENV=production
   links:
     - redis
-  external_links:
-    - ${db_link}:db
+    - db
   entrypoint: ['/usr/src/app/config/docker/rails-entrypoint.sh']
   command: ["bundle","exec","puma","-C","./config/puma.rb"]
 
 redis:
   image: redis
+
+db:
+  image: postgres
+  environment:
+    - POSTGRES_DB=hound
+    - POSTGRES_USER=${db_user}
+    - POSTGRES_PASSWORD=${db_password}
