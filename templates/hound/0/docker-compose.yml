@@ -27,6 +27,8 @@ web:
   links:
     - redis
     - db
+  labels:
+    io.rancher.container.pull_image: always
   entrypoint: ['/usr/src/app/config/docker/rails-entrypoint.sh']
   command: ["bundle","exec","puma","-C","./config/puma.rb"]
 
