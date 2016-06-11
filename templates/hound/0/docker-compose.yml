@@ -1,4 +1,4 @@
-rails:
+web:
   image: platanus/hound:latest
   ports:
     - 3000
