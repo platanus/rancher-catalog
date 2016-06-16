@@ -69,6 +69,21 @@ resque-scheduler:
     QUEUE: low,medium
   command: ["bundle","exec","rake","resque:scheduler"]
 
+linters:
+  image: platanus/hound-linters:latest
+  environment:
+    REDIS_URL: redis://redis:6379
+    DATABASE_URL: postgres://${db_user}:${db_password}@db:5432/hound
+    TERM_CHILD: 1
+    RESQUE_TERM_TIMEOUT: 8
+    QUEUE: haml_review,scss_review
+  links:
+    - redis
+    - db
+  labels:
+    io.rancher.container.pull_image: always
+  command: ["bundle","exec","rake","jobs:work"]
+
 redis:
   image: redis
 
