@@ -1,0 +1,72 @@
+.catalog:
+  version: 0.1.1-rancher1
+  questions:
+    - variable: "hound_host"
+      description: |
+        The host where the hound instance will be running
+      label: "Hound Host Domain"
+      required: true
+      type: string
+    - variable: "admin_github_usernames"
+      description: |
+        Comma separated github username that will have access to the admin panel.
+        ${host}/admin
+      label: "Admininstrator Users"
+      required: true
+      type: string
+    - variable: "github_client_id"
+      description: |
+        The github client id used to authenticate.
+      label: "Github Client ID"
+      required: true
+      type: string
+    - variable: "github_client_secret"
+      description: |
+        The github client secret used to authenticate.
+      label: "Github Client Secret"
+      required: true
+      type: password
+    - variable: "hound_github_username"
+      description: |
+        The username of the github user that will add comments to the PRs.
+      label: "Github Hound-User Username"
+      required: true
+      type: string
+    - variable: "hound_github_token"
+      description: |
+        The token for the github user that will add comments to the PRs.
+      label: "Github Hound-User Token"
+      required: true
+      type: string
+    - variable: "db_user"
+      description: |
+        The username to connect to the database with.
+      label: "Postgresql Username"
+      required: true
+      type: string
+    - variable: "db_password"
+      description: |
+        The password to connect to the database with.
+      label: "Postgresql Password"
+      required: true
+      type: password
+    - variable: "resque_admin_password"
+      description: |
+        Password to enter to the resque admin console. ${host}/queue
+      label: "Resque Admin Password"
+      required: true
+      type: string
+    - variable: "secret_key_base"
+      description: |
+        The rails secret key base
+      label: "Rails Secret Key Base"
+      required: true
+      type: string
+    - variable: "hound_image_tag"
+      description: |
+        The docker image tag to use
+      label: "Docker image tag"
+      type: string
+      required: true
+      default: latest
+      
