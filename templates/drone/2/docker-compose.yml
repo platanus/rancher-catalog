@@ -23,10 +23,9 @@ drone-server:
     - drone-data-volume
   labels:
     io.rancher.sidekicks: drone-data-volume,drone-daemon,drone-healthcheck
+    io.rancher.scheduler.affinity:host_label: CLUSTER=ops-default
   external_links:
     - ${database_service}:database
-  labels:
-    io.rancher.scheduler.affinity:host_label: CLUSTER=ops-default
 
 drone-daemon:
   image: rancher/drone:0.4
