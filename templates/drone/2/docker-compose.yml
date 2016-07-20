@@ -36,7 +36,7 @@ drone-daemon:
     - drone-data-volume
   entrypoint: /opt/rancher/rancher_entry.sh
   environment:
-    GIN_MODE: release
+    - GIN_MODE=release
 
 ## Do not change below. Could cause data loss in upgrade.
 drone-data-volume:
