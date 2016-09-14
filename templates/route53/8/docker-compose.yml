@@ -1,5 +1,5 @@
 route53:
-  image: platanus/external-dns:latest
+  image: platanus/external-dns:v0.6.0
   expose:
    - 1000
   environment:
