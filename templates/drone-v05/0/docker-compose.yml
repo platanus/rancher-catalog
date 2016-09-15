@@ -9,14 +9,15 @@ drone-lb:
   labels:
     io.rancher.container.pull_image: always
     io.rancher.scheduler.global: true
+    io.rancher.scheduler.affinity:host_label_soft: "${lb_host_affinity}"
 
 drone-server:
   image: nrvale0/drone-config:0.5
   tty: true
   volumes_from:
     - drone-data-volume
-  labels: 
-    io.rancher.sidekicks: drone-data-volume,drone-daemon, drone-healthcheck
+  labels:
+    io.rancher.sidekicks: drone-data-volume, drone-daemon, drone-healthcheck
     io.rancher.container.pull_image: always
     io.rancher.scheduler.affinity:host_label_soft: "${host_affinity}"
   external_links:
@@ -37,7 +38,7 @@ drone-healthcheck:
 drone-daemon:
   image: nrvale0/drone:0.5
   tty: true
-  labels: 
+  labels:
     io.rancher.container.pull_image: always
   net: 'container:drone-server'
   volumes:
