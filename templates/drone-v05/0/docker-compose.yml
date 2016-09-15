@@ -8,7 +8,6 @@ drone-lb:
   stdin_open: true
   labels:
     io.rancher.container.pull_image: always
-    io.rancher.loadbalancer.ssl.ports: "${public_port}"
     io.rancher.scheduler.global: true
 
 drone-server:
