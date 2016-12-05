@@ -1,0 +1,94 @@
+web:
+  image: platanus/hound:${hound_image_tag}
+  ports:
+    - 3000
+  environment: &env
+    REDIS_URL: redis://redis:6379
+    DATABASE_URL: postgres://${db_user}:${db_password}@db:5432/hound
+    GITHUB_CLIENT_ID: ${github_client_id}
+    GITHUB_CLIENT_SECRET: ${github_client_secret}
+    HOUND_GITHUB_TOKEN: ${hound_github_token}
+    HOUND_GITHUB_USERNAME: ${hound_github_username}
+    HOST: ${hound_host}
+    ADMIN_GITHUB_USERNAMES: ${admin_github_usernames}
+    RESQUE_ADMIN_PASSWORD: ${resque_admin_password}
+    SECRET_KEY_BASE: ${secret_key_base}
+    RESQUE_JOB_TIMEOUT: 120
+    INTERCOM_API_SECRET: intercom_api_secret
+    STRIPE_PUBLISHABLE_KEY: stripe_publishable_key
+    SPLIT_ADMIN_PASSWORD: split_password
+    SEGMENT_KEY: segment_key
+    MAX_COMMENTS: 10
+    CHANGED_FILES_THRESHOLD: 300
+    ENABLE_HTTPS: 'no'
+    RACK_ENV: production
+  links:
+    - redis
+    - db
+  labels:
+    io.rancher.container.pull_image: always
+  entrypoint: ['/usr/src/app/config/docker/rails-entrypoint.sh']
+  command: ["bundle","exec","puma","-C","./config/puma.rb"]
+
+resque-high: &resque
+  image: platanus/hound:${hound_image_tag}
+  environment:
+    <<: *env
+    TERM_CHILD: 1
+    RESQUE_TERM_TIMEOUT: 8
+    QUEUE: high,medium
+  links:
+    - redis
+    - db
+  labels:
+    io.rancher.container.pull_image: always
+  command: ["bundle","exec","rake","resque:work"]
+
+resque-medium:
+  <<: *resque
+  environment:
+    <<: *env
+    TERM_CHILD: 1
+    RESQUE_TERM_TIMEOUT: 8
+    QUEUE: high,medium
+
+resque-low:
+  <<: *resque
+  environment:
+    <<: *env
+    TERM_CHILD: 1
+    RESQUE_TERM_TIMEOUT: 8
+    QUEUE: low,medium
+
+resque-scheduler:
+  <<: *resque
+  environment:
+    <<: *env
+    TERM_CHILD: 1
+    RESQUE_TERM_TIMEOUT: 8
+    QUEUE: low,medium
+  command: ["bundle","exec","rake","resque:scheduler"]
+
+linters:
+  image: platanus/hound-linters:${linters_image_tag}
+  environment:
+    REDIS_URL: redis://redis:6379
+    DATABASE_URL: postgres://${db_user}:${db_password}@db:5432/hound
+    TERM_CHILD: 1
+    RESQUE_TERM_TIMEOUT: 8
+  links:
+    - redis
+    - db
+  labels:
+    io.rancher.container.pull_image: always
+  command: ["bin/resque"]
+
+redis:
+  image: redis
+
+db:
+  image: postgres
+  environment:
+    POSTGRES_DB: hound
+    POSTGRES_USER: ${db_user}
+    POSTGRES_PASSWORD: ${db_password}
